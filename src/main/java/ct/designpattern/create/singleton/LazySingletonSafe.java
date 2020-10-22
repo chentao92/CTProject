@@ -9,10 +9,9 @@ package ct.designpattern.create.singleton;
 
 public class LazySingletonSafe {
 
-    private static volatile LazySingletonSafe singleton;
+    private static volatile LazySingletonSafe singleton;  //保证 instance 在所有线程中同步
 
-    private LazySingletonSafe() {
-    }
+    private LazySingletonSafe(){}  //private 避免类在外部被实例化
 
     public static LazySingletonSafe getInstance() {
         if (singleton == null) {

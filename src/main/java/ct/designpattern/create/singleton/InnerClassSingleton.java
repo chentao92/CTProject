@@ -14,8 +14,7 @@ public class InnerClassSingleton {
         private static InnerClassSingleton instance = new InnerClassSingleton();
     }
 
-    private InnerClassSingleton() {
-    }
+    private InnerClassSingleton() {} //private 避免类在外部被实例化
 
     public static InnerClassSingleton getInstance() {
         return SingletonHolder.instance;

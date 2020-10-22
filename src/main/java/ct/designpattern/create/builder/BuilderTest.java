@@ -1,5 +1,7 @@
 package ct.designpattern.create.builder;
 
+import lombok.Getter;
+
 /**
  * @program: CTProject
  * @description: 建造者模式
