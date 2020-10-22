@@ -1,7 +1,6 @@
 package ct.number;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.DecimalFormat;
 
 /**
