@@ -90,4 +90,27 @@ public enum RegularExpression {
         }
         return matchStrs;
     }
+
+    /**
+     * 获取输入字符串匹配正则所有分组
+     * @param input 输入字符串
+     * 从正则表达式左侧开始，每出现一个左括号"("记做一个分组，分组编号从 1 开始。0 代表整个表达式。
+     * 在左括号后"("紧跟 ?:，而后再加上正则表达式，构成非捕获组，不计入分组
+     * @return
+     */
+    public List<List<String>> matcherGroup(String input) {
+        Matcher matcher =Pattern.compile(pattern).matcher(input);
+        List<List<String>> matcherGroups = new ArrayList<List<String>>();
+        while (matcher.find()) { //此处find（）每次被调用后，会偏移到下一个匹配
+            List<String> matchStrs = new ArrayList<>();
+            // groupCount()函数返回的结果比需要的结果小1
+            int groupCount = matcher.groupCount()+1;
+            for(int i = 0; i < groupCount; i++){
+                matchStrs.add(matcher.group(i));//获取当前匹配的值
+            }
+            matcherGroups.add(matchStrs);
+        }
+        return matcherGroups;
+    }
+
 }

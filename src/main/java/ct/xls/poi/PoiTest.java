@@ -240,13 +240,10 @@ public class PoiTest {
      * @return
      */
     private String copyCellFormula(int baseRowNum, int currentRowNum,  String cellFormula) {
-
-        List<String> columnRowList = RegularExpression.EXCEL_CELL.matcher(cellFormula,0);
-        List<String> columnList = RegularExpression.EXCEL_CELL.matcher(cellFormula,1);
-        List<String> rowList = RegularExpression.EXCEL_CELL.matcher(cellFormula,2);
-        for(int i = 0; i < rowList.size(); i++){
-            if(Integer.parseInt(rowList.get(i)) == (baseRowNum+1)){
-                cellFormula = cellFormula.replaceAll(columnRowList.get(i),columnList.get(i) + (currentRowNum+1));
+        List<List<String>> list = RegularExpression.EXCEL_CELL.matcherGroup(cellFormula);
+        for(int i = 0; i < list.size(); i++){
+            if(Integer.parseInt(list.get(i).get(2)) == (baseRowNum+1)){
+                cellFormula = cellFormula.replaceAll(list.get(i).get(0),list.get(i).get(1) + (currentRowNum+1));
             }
         }
         return cellFormula;
