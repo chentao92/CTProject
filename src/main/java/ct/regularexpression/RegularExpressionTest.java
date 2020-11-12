@@ -28,5 +28,12 @@ public class RegularExpressionTest {
         System.out.println(RegularExpression.ID_NUMBER.matcherFirst(input,5));
         System.out.println(RegularExpression.ID_NUMBER.matcherFirst(input,6));
         System.out.println(RegularExpression.ID_NUMBER.matcherFirst(input,7));
+        input = "${a.b.c}";
+        System.out.println(RegularExpression.PLACEHOLDER.matcherFirst(input,1));
+        input = "34*C34*B34";
+        System.out.println(RegularExpression.EXCEL_CELL.matcher(input,0));
+        System.out.println(RegularExpression.EXCEL_CELL.matcher(input,1));
+        System.out.println(RegularExpression.EXCEL_CELL.matcher(input,2));
+
     }
 }
