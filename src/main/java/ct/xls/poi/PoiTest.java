@@ -133,51 +133,50 @@ public class PoiTest<T> {
                             if (size == 0) {
                                 hssfSheet.shiftRows(hssfRow.getRowNum()+1,hssfRow.getRowNum()+1,-1);
                                 break;
+                            }
+                            if (temp.get(arr[0]) == null) {
+                                int rowNum = hssfRow.getRowNum();
+                                List<HSSFRow> hssfRowList = new ArrayList<HSSFRow>();
+                                for (int i = 0; i < size; i++) {
+                                    HSSFRow tempRow = null;
+                                    if (i > 0) {
+                                        tempRow = hssfSheet.createRow(rowNum + i);
+                                        if(hssfRow.getRowStyle()!=null){
+                                            tempRow.setRowStyle(hssfRow.getRowStyle());
+                                        }
+                                        for( int j = 0; j < hssfRow.getLastCellNum(); j++){
+                                            HSSFCell tempCell = tempRow.createCell(j);
+                                            CellType tempCellType = hssfRow.getCell(j).getCellType();
+                                            if(CellType.FORMULA.equals(tempCellType)){
+                                                tempCell.setCellFormula(copyCellFormula(rowNum, rowNum+i, hssfRow.getCell(j).getCellFormula()));
+                                            }else {
+                                                tempCell.setCellType(tempCellType);
+                                            }
+                                            tempCell.setCellStyle(hssfRow.getCell(j).getCellStyle());
+                                        }
+                                        hssfRowList.add(tempRow);
+                                    }else {
+                                        tempRow = hssfRow;
+                                    }
+                                    Object object = listObj.get(i);
+                                    Field objectField = object.getClass().getDeclaredField(arr[1]);
+                                    objectField.setAccessible(true);
+                                    setCellValue(objectField.get(object), tempRow.getCell(hssfCellIndex));
+                                }
+                                temp.put(arr[0], hssfRowList);
                             } else {
-                                if (temp.get(arr[0]) != null) {
-                                    for (int i = 0; i < size; i++) {
-                                        HSSFRow tempRow = null;
-                                        if (i > 0) {
-                                            tempRow =  temp.get(arr[0]).get(i - 1);
-                                        }else {
-                                            tempRow = hssfRow;
-                                        }
-                                        HSSFCell tempCell = tempRow.getCell(hssfCellIndex);
-                                        Object object =  listObj.get(i);
-                                        Field objectField = object.getClass().getDeclaredField(arr[1]);
-                                        objectField.setAccessible(true);
-                                        setCellValue(objectField.get(object), tempCell);
+                                for (int i = 0; i < size; i++) {
+                                    HSSFRow tempRow = null;
+                                    if (i > 0) {
+                                        tempRow =  temp.get(arr[0]).get(i - 1);
+                                    }else {
+                                        tempRow = hssfRow;
                                     }
-                                } else {
-                                    int rowNum = hssfRow.getRowNum();
-                                    List<HSSFRow> hssfRowList = new ArrayList<HSSFRow>();
-                                    for (int i = 0; i < size; i++) {
-                                        HSSFRow tempRow = null;
-                                        if (i > 0) {
-                                            tempRow = hssfSheet.createRow(rowNum + i);
-                                            if(hssfRow.getRowStyle()!=null){
-                                                tempRow.setRowStyle(hssfRow.getRowStyle());
-                                            }
-                                            for( int j = 0; j < hssfRow.getLastCellNum(); j++){
-                                                HSSFCell tempCell = tempRow.createCell(j);
-                                                CellType tempCellType = hssfRow.getCell(j).getCellType();
-                                                if(CellType.FORMULA.equals(tempCellType)){
-                                                    tempCell.setCellFormula(copyCellFormula(rowNum, rowNum+i, hssfRow.getCell(j).getCellFormula()));
-                                                }else {
-                                                    tempCell.setCellType(tempCellType);
-                                                }
-                                                tempCell.setCellStyle(hssfRow.getCell(j).getCellStyle());
-                                            }
-                                            hssfRowList.add(tempRow);
-                                        }else {
-                                            tempRow = hssfRow;
-                                        }
-                                        Object object = listObj.get(i);
-                                        Field objectField = object.getClass().getDeclaredField(arr[1]);
-                                        objectField.setAccessible(true);
-                                        setCellValue(objectField.get(object), tempRow.getCell(hssfCellIndex));
-                                    }
-                                    temp.put(arr[0], hssfRowList);
+                                    HSSFCell tempCell = tempRow.getCell(hssfCellIndex);
+                                    Object object =  listObj.get(i);
+                                    Field objectField = object.getClass().getDeclaredField(arr[1]);
+                                    objectField.setAccessible(true);
+                                    setCellValue(objectField.get(object), tempCell);
                                 }
                             }
                         } else {
@@ -192,7 +191,6 @@ public class PoiTest<T> {
         workbook.write(xlsStream);
         workbook.close();
         return xlsStream;
-
     }
 
 
@@ -253,47 +251,46 @@ public class PoiTest<T> {
                             if (size == 0) {
                                 hssfSheet.shiftRows(hssfRow.getRowNum()+1,hssfRow.getRowNum()+1,-1);
                                 break;
+                            }
+                            if (temp.get(arr[0]) != null) {
+                                int rowNum = hssfRow.getRowNum();
+                                List<HSSFRow> hssfRowList = new ArrayList<HSSFRow>();
+                                for (int i = 0; i < size; i++) {
+                                    HSSFRow tempRow = null;
+                                    if (i > 0) {
+                                        tempRow = hssfSheet.createRow(rowNum + i);
+                                        if(hssfRow.getRowStyle()!=null){
+                                            tempRow.setRowStyle(hssfRow.getRowStyle());
+                                        }
+                                        for( int j = 0; j < hssfRow.getLastCellNum(); j++){
+                                            HSSFCell tempCell = tempRow.createCell(j);
+                                            CellType tempCellType = hssfRow.getCell(j).getCellType();
+                                            if(CellType.FORMULA.equals(tempCellType)){
+                                                tempCell.setCellFormula(copyCellFormula(rowNum, rowNum+i, hssfRow.getCell(j).getCellFormula()));
+                                            }else {
+                                                tempCell.setCellType(tempCellType);
+                                            }
+                                            tempCell.setCellStyle(hssfRow.getCell(j).getCellStyle());
+                                        }
+                                        hssfRowList.add(tempRow);
+                                    }else {
+                                        tempRow = hssfRow;
+                                    }
+                                    Map<String, Object> objectMap = (Map<String, Object>) list.get(i);
+                                    setCellValue(objectMap.get(arr[1]), tempRow.getCell(hssfCellIndex));
+                                }
+                                temp.put(arr[0], hssfRowList);
                             } else {
-                                if (temp.get(arr[0]) != null) {
-                                    for (int i = 0; i < size; i++) {
-                                        HSSFRow tempRow = null;
-                                        if (i > 0) {
-                                            tempRow =  temp.get(arr[0]).get(i - 1);
-                                        }else {
-                                            tempRow = hssfRow;
-                                        }
-                                        HSSFCell tempCell = tempRow.getCell(hssfCellIndex);
-                                        Map<String, Object> objectMap = (Map<String, Object>) list.get(i);
-                                        setCellValue(objectMap.get(arr[1]), tempCell);
+                                for (int i = 0; i < size; i++) {
+                                    HSSFRow tempRow = null;
+                                    if (i > 0) {
+                                        tempRow =  temp.get(arr[0]).get(i - 1);
+                                    }else {
+                                        tempRow = hssfRow;
                                     }
-                                } else {
-                                    int rowNum = hssfRow.getRowNum();
-                                    List<HSSFRow> hssfRowList = new ArrayList<HSSFRow>();
-                                    for (int i = 0; i < size; i++) {
-                                        HSSFRow tempRow = null;
-                                        if (i > 0) {
-                                            tempRow = hssfSheet.createRow(rowNum + i);
-                                            if(hssfRow.getRowStyle()!=null){
-                                                tempRow.setRowStyle(hssfRow.getRowStyle());
-                                            }
-                                            for( int j = 0; j < hssfRow.getLastCellNum(); j++){
-                                                HSSFCell tempCell = tempRow.createCell(j);
-                                                CellType tempCellType = hssfRow.getCell(j).getCellType();
-                                                if(CellType.FORMULA.equals(tempCellType)){
-                                                    tempCell.setCellFormula(copyCellFormula(rowNum, rowNum+i, hssfRow.getCell(j).getCellFormula()));
-                                                }else {
-                                                    tempCell.setCellType(tempCellType);
-                                                }
-                                                tempCell.setCellStyle(hssfRow.getCell(j).getCellStyle());
-                                            }
-                                            hssfRowList.add(tempRow);
-                                        }else {
-                                            tempRow = hssfRow;
-                                        }
-                                        Map<String, Object> objectMap = (Map<String, Object>) list.get(i);
-                                        setCellValue(objectMap.get(arr[1]), tempRow.getCell(hssfCellIndex));
-                                    }
-                                    temp.put(arr[0], hssfRowList);
+                                    HSSFCell tempCell = tempRow.getCell(hssfCellIndex);
+                                    Map<String, Object> objectMap = (Map<String, Object>) list.get(i);
+                                    setCellValue(objectMap.get(arr[1]), tempCell);
                                 }
                             }
                         } else {
